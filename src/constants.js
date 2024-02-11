@@ -1,6 +1,7 @@
 export const URL = 'https://brokenworlds.online/index.php';
 export const URLMAIN = 'https://brokenworlds.online/main.php';
-export const URLRENDER = 'https://brokenworlds.online//render.php';
+export const URLRENDER = 'https://brokenworlds.online/render.php';
+export const URLMAP = 'https://brokenworlds.online/map.php';
 
 export const NICK = 'Jokker';
 export const PASS = 'Gred555555';

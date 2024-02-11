@@ -1,17 +1,18 @@
 import { JSDOM } from 'jsdom';
 import { delay } from './delay.js';
-import { URLMAIN, URLRENDER } from '../constants.js';
+import { URLMAIN, URLMAP, URLRENDER } from '../constants.js';
 
 export async function getInfoAboutResource(page) {
   try {
     const resource = {};
     const [city, allObjectResourceByCity] = await getInfoFromAside(page);
+    const coords = await getCoordsFromMap(page);
     const resourceFromMap = await getInfoFromMap(page);
     for (const [oldKey, value] of Object.entries(resourceFromMap)) {
       const newKey = allObjectResourceByCity[oldKey];
       resource[newKey] = value;
     }
-    return { city, resource };
+    return { city, coords, resource };
   } catch (error) {
     throw error;
   }
@@ -54,6 +55,18 @@ async function getInfoFromMap(page) {
         return acc;
       }, {});
     return resourceFromMap;
+  } catch (error) {
+    throw error;
+  }
+}
+async function getCoordsFromMap(page) {
+  try {
+    await page.goto(URLMAP);
+    await delay(1000);
+    const data = await page.content();
+    const { document } = new JSDOM(data).window;
+    const coords = document.querySelector('#zero').textContent.match(/\(([^)]+)\)/)[1];
+    return coords;
   } catch (error) {
     throw error;
   }
